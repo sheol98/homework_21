@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Задача №4</title>
+    <style>
+      .container-for-student {
+        max-width: 300px;
+      }
+      .container-for-student label {
+        display: flex;
+      }
+      input {
+        flex-grow: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h3>
+        Задача 4. Користувач задає місяць навчання учня (перевіряти чи є числом,
+        чи від 1 до 12, чи не канікули) та оцінку (перевіряти чи є числом, чи
+        від 1 до 100). Вивести чи зможе він виправити оцінку (якщо оцінка погана
+        і це не останній місяць у семестрі) . Обробку усіх помилок зробити з
+        використанням відповідних класів.
+      </h3>
+    </header>
+    <main></main>
+    <script>
+      class IsNotANumberError extends Error {
+        constructor() {
+          super();
+          this.message = "Має бути число";
+          this.name = "IsNotANumberError";
+        }
+      }
+      class IsInRangeError extends Error {
+        constructor() {
+          super();
+          this.message = "Число не знаходиться в межах діапазону";
+          this.name = "IsInRangeError";
+        }
+      }
+
+      class Student {
+        constructor() {
+          this.el = this.render();
+        }
+        creatInputForMonth() {
+          const labelEl = document.createElement("label");
+          labelEl.innerText = "Місяць навчання";
+
+          this.inpElMonth = document.createElement("input");
+          this.inpElMonth.setAttribute("placeholder", "Місяць навчання");
+          this.inpElMonth.className = "inp-for-month";
+          labelEl.append(this.inpElMonth);
+
+          return labelEl;
+        }
+
+        creatInputForScore() {
+          const labelEl = document.createElement("label");
+          labelEl.innerText = "Оцінка";
+
+          this.inpElScore = document.createElement("input");
+          this.inpElScore.setAttribute("placeholder", "Оцінка");
+          this.inpElScore.className = "inp-for-score";
+          labelEl.append(this.inpElScore);
+
+          return labelEl;
+        }
+
+        checkValueScore() {
+          try {
+            const score = parseInt(this.inpElScore.value);
+            if (isNaN(score)) throw new IsNotANumberError();
+            if (score < 1 || score > 100) throw new IsInRangeError();
+          } catch (err) {
+            if (err instanceof IsNotANumberError) console.log(err.message);
+            else if (err instanceof IsInRangeError)
+              console.log(`${err.message}  (1-100)`);
+            else console.log(err.message);
+          }
+        }
+        checkValueMonth() {
+          try {
+            const month = parseInt(this.inpElMonth.value);
+            if (isNaN(month)) throw new IsNotANumberError();
+            if (month < 1 || month > 12) throw new IsInRangeError();
+          } catch (err) {
+            if (err instanceof IsNotANumberError) console.log(err.message);
+            else if (err instanceof IsInRangeError)
+              console.log(`${err.message} (1-12)`);
+            else console.log(err.message);
+          }
+        }
+        getRes() {
+          this.checkValueScore();
+          this.checkValueMonth();
+          // const resContainer = document.createElement("div");
+
+          let month = parseInt(this.inpElMonth.value);
+          let score = parseInt(this.inpElScore.value);
+
+          if ((month>=2 && month <= 4 || (month >= 9 && month < 12)) && score < 75)
+            this.containerForRes.innerText = "Можна виправити оцінку";
+          else this.containerForRes.innerText = "Оцінку виправити не можна";
+
+          // document.querySelector("main").append(resContainer);
+        }
+
+        creatBtnForRes() {
+          const btn = document.createElement("button");
+          btn.innerText = "Перевірка";
+          btn.className = "btn-for-res";
+          btn.onclick = this.getRes.bind(this);
+
+          return btn;
+        }
+        render() {
+          const container = document.createElement("div");
+          container.className = "container-for-student";
+
+          container.append(this.creatInputForMonth());
+          container.append(this.creatInputForScore());
+          container.append(this.creatBtnForRes());
+
+					this.containerForRes = document.createElement('div')
+          document.querySelector("main").append(container);
+          document.querySelector("main").append(this.containerForRes);
+          return container;
+        }
+      }
+
+      let s1 = new Student();
+    </script>
+  </body>
+</html>

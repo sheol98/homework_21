@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Задача №2</title>
+  </head>
+  <body>
+    <header>
+      <h3>
+        Задача 2. Створити клас Bank, у якому зберігається масив клієнтів.
+        Виконати такі операції:<br />
+        Вивести всіх простих клієнтів; <br />Вивести всіх клієнтів GoldenClient;
+        <br />Знайти сумарну кількість грошей на рахунку;
+      </h3>
+    </header>
+
+    <script>
+      // Моя ідея полягає в тому що звичайні клієни мають ID рахунки від 1 до 10000,
+      // а золоті клієнти мають рахунки починаючи від 10001
+      class Client {
+        constructor(ID, fullName, quantityMoneyOnAccount) {
+          this.ID = ID;
+
+          this.fullName = fullName;
+
+          this.quantityMoneyOnAccount = quantityMoneyOnAccount;
+        }
+
+        getAddMoney(value) {
+          this.quantityMoney += value;
+        }
+
+        getSubtractMonay(value) {
+          if (this.quantityMoney >= value) {
+            this.quantityMoney -= value;
+          }
+        }
+
+        toString() {
+          return `${this.ID} : ${this.fullName} : ${this.quantityMoneyOnAccount}₴`;
+        }
+      }
+
+      class GoldenClient extends Client {
+        constructor(
+          ID,
+          fullName,
+          quantityMoneyOnAccount,
+          limitCreditMoney,
+          percentOnCredit
+        ) {
+          super(ID, fullName, quantityMoneyOnAccount);
+
+          this.limitCreditMoney = limitCreditMoney;
+
+          this.percentOnCredit = percentOnCredit;
+        }
+
+        loanPenalty() {
+          return (this.limitCreditMoney / 100) * this.percentOnCredit;
+        }
+        toString() {
+          return `${super.toString()}`;
+        }
+      }
+
+      class Bank {
+        constructor(clientsList) {
+          this.clientsList = [...clientsList];
+        }
+
+        removeAllRegularClients() {
+          return this.clientsList.filter((client) => client.ID < 10000);
+        }
+
+        removeAllGoldenClientClients() {
+          return this.clientsList.filter((client) => client.ID > 10000);
+        }
+
+        totalMoney() {
+          return this.clientsList.reduce(
+            (prevSum, client) => prevSum + client.quantityMoneyOnAccount,
+            0
+          );
+        }
+        toString() {
+          return `Кількість клієнтів банка - ${this.clientsList.length}`;
+        }
+      }
+
+      let clientsList = [
+        new Client(1111, "Усман Шахзад", 10000),
+        new Client(2222, "Віктор Смольницький", 7000),
+        new Client(3333, "Яна Корнійчук", 6500),
+        new GoldenClient(10100, "Андрій Шевченко", 2000, 50000, 3),
+        new GoldenClient(10500, "Сергій Обама", 17000, 30000, 9),
+        new GoldenClient(10234, "Петро Сагайдачний", 12000, 10000, 4),
+      ];
+
+      let bank1 = new Bank(clientsList);
+      console.log(bank1);
+      console.log(bank1.removeAllGoldenClientClients());
+      console.log(bank1.removeAllRegularClients());
+    </script>
+  </body>
+</html>

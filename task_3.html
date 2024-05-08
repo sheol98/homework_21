@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Задача №3</title>
+    <style>
+      main {
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h3>Задача 3. Розробити Класи</h3>
+    </header>
+    <main></main>
+    <script>
+      class ShowImg {
+        // - властивості ---
+        constructor(x, y, imgUrl, intervalUpdate) {
+          // Координата Х
+          this.x = x;
+          // Координата У
+          this.y = y;
+          // шлях до зображення
+          this.imgUrl = imgUrl;
+          // інтервал оновлення
+          this.intervalUpdate = intervalUpdate;
+
+          this.el = this.render();
+        }
+        // --- методи ---
+        // генерування елемента розмітки
+
+        render() {
+          const imgEl = document.createElement("img");
+          imgEl.setAttribute("src", this.imgUrl);
+          imgEl.style.position = "absolute";
+          imgEl.style.top = `${this.y}px`;
+          imgEl.style.left = `${this.x}px`;
+
+          document.querySelector("main").append(imgEl);
+          return imgEl;
+        }
+      }
+
+      class House extends ShowImg {
+        constructor(x, y, imgUrl, intervalUpdate) {
+          super(x, y, imgUrl, intervalUpdate);
+          this.interval();
+        }
+        interval() {
+          setInterval(() => {
+            const randomScale = 0.5 + Math.floor(Math.random() * (2 - 0.5 + 1));
+            this.el.style.transform = `scale(${randomScale})`;
+          }, this.intervalUpdate);
+        }
+      }
+
+      class Dog extends ShowImg {
+        constructor(x, y, imgUrl, intervalUpdate) {
+          super(x, y, imgUrl, intervalUpdate);
+          this.interval();
+        }
+        interval() {
+          setInterval(() => {
+            const randomPositionX =
+              -200 + Math.floor(Math.random() * (2 * 200 + 1));
+            const newLeft = parseInt(this.el.style.left) + randomPositionX;
+            this.el.style.left = `${newLeft}px`;
+          }, this.intervalUpdate);
+        }
+      }
+
+      class Bird extends ShowImg {
+        constructor(x, y, imgUrl, intervalUpdate) {
+          super(x, y, imgUrl, intervalUpdate);
+          this.interval();
+        }
+        interval() {
+          setInterval(() => {
+            const randomPositionX =
+              -100 + Math.floor(Math.random() * (2 * 100 + 1));
+            const randomPositionY =
+              -100 + Math.floor(Math.random() * (2 * 100 + 1));
+
+            const newTop = parseInt(this.el.style.top) + randomPositionY;
+            const newLeft = parseInt(this.el.style.left) + randomPositionX;
+
+            this.el.style.top = `${newTop}px`;
+            this.el.style.left = `${newLeft}px`;
+          }, this.intervalUpdate);
+        }
+      }
+      const house1 = new House(140, 40, "img/house.jpeg", 500);
+      const dog1 = new Dog(540, 240, "img/dog.jpeg", 800);
+      const bidr1 = new Bird(340, 540, "img/bird.jpeg", 500);
+    </script>
+  </body>
+</html>

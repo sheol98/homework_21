@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Задача №1</title>
+  </head>
+  <body>
+    <header>
+      <h3>
+        Задача 1. Створити клас Client.<br />На основі цього класу створити клас
+        GoldenClient
+      </h3>
+    </header>
+    <main></main>
+    <script>
+      // Задача 1.
+      // Створити клас Client
+      class Client {
+        // Властивості
+        constructor(ID, fullName, quantityMoneyOnAccount) {
+          // ID
+          this.ID = ID;
+          // ПІБ
+          this.fullName = fullName;
+          // Кількість грошей на рахунку
+          this.quantityMoneyOnAccount = quantityMoneyOnAccount;
+        }
+        // Методи
+        // Додавання грошей
+        getAddMoney(value) {
+          this.quantityMoney += value;
+        }
+        // Зняття грошей
+        getSubtractMonay(value) {
+          if (this.quantityMoney >= value) {
+            this.quantityMoney -= value;
+          }
+        }
+        // ToString
+        toString() {
+          return `${this.ID} : ${this.fullName} : ${this.quantityMoneyOnAccount}₴`;
+        }
+      }
+      // На основі цього класу створити клас GoldenClient
+      class GoldenClient extends Client {
+        // Властивості
+        constructor(
+          ID,
+          fullName,
+          quantityMoneyOnAccount,
+          limitCreditMoney,
+          percentOnCredit
+        ) {
+          super(ID, fullName, quantityMoneyOnAccount);
+          // Ліміт кредитних коштів
+          this.limitCreditMoney = limitCreditMoney;
+          // Відсоток за використання кредитних коштів
+          this.percentOnCredit = percentOnCredit;
+        }
+        // Методи
+        // Визначення пені за використання кредитних коштів
+        loanPenalty() {
+          return (this.limitCreditMoney / 100) * this.percentOnCredit;
+        }
+        toString() {
+          return `${super.toString()}`;
+        }
+      }
+
+      const client1 = new Client(1212, "Шахзад Усман", 10000);
+
+      const goldenClient1 = new GoldenClient(2222, "Іван Остапець", 5000);
+      document.write(client1);
+      document.write(`<br>${goldenClient1}`);
+    </script>
+  </body>
+</html>
